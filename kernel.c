@@ -89,16 +89,46 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 
 void terminal_putchar(char c)
 {
-    terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 
-    if (++terminal_column == VGA_WIDTH)
-    {
+    // if (c == '\n')
+    // {
+    //     terminal_column = 0;
+    //     // if (++terminal_row >= VGA_HEIGHT)
+    //     // {
+    //     //     terminal_row = 0;
+    //     // }
+    //
+    //     // else {
+    //         terminal_row++;
+    //     // }
+    // }
+
+    if (c == '\n') {
+
         terminal_column = 0;
-        if (++terminal_row == VGA_HEIGHT)
+
+        if ((terminal_row + 1) >= VGA_HEIGHT)
         {
             terminal_row = 0;
         }
+
+        else
+        {
+            terminal_row++;
+        }
+
+        return;
     }
+
+
+    terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+	if (++terminal_column >= VGA_WIDTH) {
+		terminal_column = 0;
+		if (++terminal_row >= VGA_HEIGHT)
+			terminal_row = 0;
+	}
+
+
 }
 
 void terminal_write(const char* data, size_t size)
@@ -119,4 +149,5 @@ void kernel_main(void)
     terminal_initialise();
 
     terminal_writestring("Hello, kernel World!\n");
+    terminal_writestring("Something in the way");
 }
